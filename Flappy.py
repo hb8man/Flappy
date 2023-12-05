@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.scaled.get_rect(center = (240, 250))
         self.gravity = 0
         self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
-        self.jump_sound.set_volume(0.2)
+        self.jump_sound.set_volume(0.04)
 
     # Make player sprite "jump" when space is pressed
     def player_input(self):
