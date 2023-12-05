@@ -1,6 +1,6 @@
 """Flappy.py
 Authors: Vicky Singharaj, Katarina Schoening, W. Bateman
-Date Completed: 12/2/2023
+Date Completed: 12/3/2023
 Description: This is a flappy bird type game made with pygame using Python
 the user can enter their name to have their score and name displayed after they play. 
 The user can opt to play again or click the 'x' to exit. 
