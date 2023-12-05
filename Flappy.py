@@ -1,7 +1,9 @@
 """Flappy.py
-Authors: W. Henry Bateman
-Date Completed:
-Description:
+Authors: Vicky Singharaj, Katarina Schoening, W. Bateman
+Date Completed: 12/2/2023
+Description: This is a flappy bird type game made with pygame using Python
+the user can enter their name to have their score and name displayed after they play. 
+The user can opt to play again or click the 'x' to exit. 
 """
 
 import pygame
@@ -9,7 +11,6 @@ import random
 
 
 class Player(pygame.sprite.Sprite):
-    
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('graphics/pixil-frame-0-2.png').convert_alpha()
@@ -19,6 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
         self.jump_sound.set_volume(0.2)
 
+    # Make player sprite "jump" when space is pressed
     def player_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
@@ -96,7 +98,7 @@ def display_score():
     screen.blit(score_surf,score_rect)
     return current_time
     
-
+# Initialize pygame
 pygame.init()
 
 # Initial variables
@@ -196,11 +198,11 @@ while True:
         screen.blit(sky_surface, (0,200))
         screen.blit(ground_surface, ground_rect)
 
-        # Draw player sprite class
+        # Draw player sprite class & update every tick
         player.draw(screen)
         player.update()
 
-        # Draw obstacle sprite class
+        # Draw obstacle sprite class & update every tick
         obstacle_group.draw(screen)
         obstacle_group.update()
 
@@ -217,9 +219,11 @@ while True:
         
         # Clear loaded obstacles
         obstacle_group.empty()
+        
         # Reset clock
         start_time = pygame.time.get_ticks()
 
+        # Font object for text
         game_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 
         # Game over text
