@@ -1,102 +1,23 @@
 """Flappy.py
 Authors: Vicky Singharaj, Katarina Schoening, W. Bateman
 Date Completed: 12/3/2023
+
 Description: This is a flappy bird type game made with pygame using Python
 the user can enter their name to have their score and name displayed after they play. 
 The user can opt to play again or click the 'x' to exit. 
 """
 
+# TODO: Docstring for funcitons (classes and methods)
+# TODO: When opening file, use Try / Exept
+
+
 import pygame
 import random
+from Obstacle import Obstacle
+from Player import Player
+from Methods import spawn_obstacle
+from Methods import display_score
 
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load('graphics/pixil-frame-0-2.png').convert_alpha()
-        self.scaled = pygame.transform.scale(self.image,(30,30))
-        self.rect = self.scaled.get_rect(center = (240, 250))
-        self.gravity = 0
-        self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
-        self.jump_sound.set_volume(0.04)
-
-    # Make player sprite "jump" when space is pressed
-    def player_input(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
-            self.gravity = -7
-            self.jump_sound.play()
-    
-    # Change player y position down to mimic gravity
-    def apply_gravity(self):
-        self.gravity += 0.5
-        self.rect.y += self.gravity
-        if self.rect.bottom >= 500:
-            self.rect.bottom = 500
-        if self.rect.top <= 0:
-            self.rect.top = 0  
-
-    def update(self):
-        self.player_input()
-        self.apply_gravity()
-
-class Obstacle(pygame.sprite.Sprite):
-    def __init__(self, type):
-        super().__init__()
-        # Group 1
-        if type == 1:
-            self.image = pygame.Surface(size = (30,250))
-            self.rect = pygame.Rect(830,0,25,235)
-            self.image.fill('#8EBC41')
-        if type == 2:
-            self.image = pygame.Surface(size = (30,100))
-            self.rect = pygame.Rect(830,400,25,95)
-            self.image.fill('#8EBC41')
-        # Group 2
-        if type == 3:
-            self.image = pygame.Surface(size = (30,300))
-            self.rect = pygame.Rect(830,200,25,295)
-            self.image.fill('#8EBC41')
-        if type == 4:
-            self.image = pygame.Surface(size = (30,50))
-            self.rect = pygame.Rect(830,0,25,45)
-            self.image.fill('#8EBC41')
-        # Group 3
-        if type == 5:
-            self.image = pygame.Surface(size = (30,150))
-            self.rect = pygame.Rect(830,350,25,145)
-            self.image.fill('#8EBC41')
-        if type == 6:
-            self.image = pygame.Surface(size = (30,150))
-            self.rect = pygame.Rect(830,0,25,145)
-            self.image.fill('#8EBC41')
-    
-    def update(self):
-        self.rect.x -= 4
-        if game_state == "game":
-            self.rect.x = 830
-
-# Adds two obstacle sprites from random int
-def spawn_obstacle():
-    random_number = random.randint(1,3)
-    if random_number == 1:
-        obstacle_group.add(Obstacle(1))
-        obstacle_group.add(Obstacle(2))
-    if random_number == 2:
-        obstacle_group.add(Obstacle(3))
-        obstacle_group.add(Obstacle(4))
-    if random_number == 3:
-        obstacle_group.add(Obstacle(5))
-        obstacle_group.add(Obstacle(6))
-
-# Formats and returns score
-def display_score():
-    game_font = pygame.font.Font('font/Pixeltype.ttf', 50)
-    current_time = int(pygame.time.get_ticks()) - start_time
-    score_surf = game_font.render(f"{int(current_time/1000)}",False,(64,64,64))
-    score_rect = score_surf.get_rect(center = (400,50))
-    screen.blit(score_surf,score_rect)
-    return current_time
     
 # Initialize pygame
 pygame.init()
@@ -126,12 +47,14 @@ obstacle_group = pygame.sprite.Group()
 
 # Background Surfaces
 sky_surface = pygame.image.load('Graphics/Sky.png').convert_alpha()
+
 sky_surface_top = pygame.Surface(size = (800, 300))
-sky_surface_top.fill(color = "#D7F3F6")
+sky_surface_top.fill(color = "#D7F3F6") # Light blue color
 ground_surface = pygame.image.load('Graphics/Ground.png').convert_alpha()
 ground_rect = ground_surface.get_rect(topleft = (0,500))
 
 # Obstacle timer
+# TODO: Explain this more
 obstacle_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(obstacle_timer, 850)
 
@@ -145,7 +68,7 @@ while True:
         if game_state == "game_loop":
             # Spawn obstacle when timer goes off
             if event.type ==  obstacle_timer:
-                spawn_obstacle()
+                spawn_obstacle(obstacle_group = obstacle_group)
         # Begin game loop state when space pressed
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             if len(text_input) > 0:
@@ -212,7 +135,7 @@ while True:
             game_state = "end"
 
         # Display score
-        score = int(display_score()/1000)
+        score = int(display_score(start_time = start_time, screen = screen)/1000)
     else:
         # Game over state
 
