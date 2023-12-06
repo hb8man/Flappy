@@ -191,7 +191,7 @@ while True:
 
 
     elif game_state == "game_loop":
-        # Enter main game loop
+        # Enter main game loop state
 
         # Render background objects
         screen.blit(sky_surface_top, (0,0))
@@ -214,6 +214,8 @@ while True:
         # Display score
         score = int(display_score()/1000)
     else:
+        # Game over state
+
         # Show Game Over screen
         screen.fill('#D7F3F6')
         
