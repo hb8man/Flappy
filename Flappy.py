@@ -7,9 +7,6 @@ the user can enter their name to have their score and name displayed after they 
 The user can opt to play again or click the 'x' to exit. 
 """
 
-# TODO: Docstring for funcitons (classes and methods)
-# TODO: When opening file, use Try / Exept
-
 
 import pygame
 import random
@@ -27,7 +24,13 @@ game_state = "start_menu"
 start_time = 0
 score = 0
 text_input = ''
-collision_sound = pygame.mixer.Sound('audio/metal-pipe-falling-sound-effect-made-with-Voicemod-technology.mp3')
+try:
+    audio = 'audio/metal-pipe-falling-sound-effect-made-with-Voicemod-technology.mp3'
+    collision_sound = pygame.mixer.Sound(audio)
+except IOError:
+    print(f'{audio} could not be found.')
+    pygame.quit()
+    exit()
 
 # Set up screen
 screen = pygame.display.set_mode((800, 600))
@@ -46,15 +49,27 @@ loaded_player = player.add(Player())
 obstacle_group = pygame.sprite.Group()
 
 # Background Surfaces
-sky_surface = pygame.image.load('Graphics/Sky.png').convert_alpha()
-
+try:
+    image = 'Graphics/Sky.png'
+    sky_surface = pygame.image.load(image).convert_alpha()
+except IOError:
+    print(f"{image} could not be found")
+    pygame.quit()
+    exit()
 sky_surface_top = pygame.Surface(size = (800, 300))
 sky_surface_top.fill(color = "#D7F3F6") # Light blue color
-ground_surface = pygame.image.load('Graphics/Ground.png').convert_alpha()
+
+try:
+    image = 'Graphics/Ground.png'
+    ground_surface = pygame.image.load(image).convert_alpha()
+except IOError:
+    print(f"{image} not found")
+    pygame.quit()
+    exit()
 ground_rect = ground_surface.get_rect(topleft = (0,500))
 
 # Obstacle timer
-# TODO: Explain this more
+# Spawns new obstacles at 850 msec intervals
 obstacle_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(obstacle_timer, 850)
 
@@ -90,7 +105,13 @@ while True:
     
     # Start menu state
     if game_state == "start_menu":
-        game_font = pygame.font.Font('font/Pixeltype.ttf', 50)
+        try:
+            font = 'font/Pixeltype.ttf'
+            game_font = pygame.font.Font(font, 50)
+        except IOError:
+            print(f"{font} not found.")
+            pygame.quit()
+            exit()
         screen.fill('#D7F3F6')
         # Title
         title_surf = game_font.render(f"Welcome to Flappy",False,(64,64,64))
@@ -147,9 +168,6 @@ while True:
         
         # Reset clock
         start_time = pygame.time.get_ticks()
-
-        # Font object for text
-        game_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 
         # Game over text
         game_over_surf = game_font.render(f"GAME OVER",False,(64,64,64))
