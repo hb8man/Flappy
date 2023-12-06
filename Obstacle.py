@@ -1,6 +1,8 @@
 import pygame
 
 class Obstacle(pygame.sprite.Sprite):
+    """Holds 3 variations of obstacles and moves them during game loop.
+    """
     def __init__(self, type):
         super().__init__()
         # Group 1
@@ -32,4 +34,6 @@ class Obstacle(pygame.sprite.Sprite):
             self.image.fill('#8EBC41')
     
     def update(self):
+        """ Moves obstacles across screen towards player.
+        """
         self.rect.x -= 4
